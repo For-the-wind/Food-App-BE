@@ -31,6 +31,13 @@
 $ npm install
 ```
 
+## Database
+
+This backend is configured to use a SQL relational database via SQLite (Sequelize).
+
+- Default database file: `database.sqlite`
+- Override path with: `DATABASE_PATH=/path/to/database.sqlite`
+
 ## Compile and run the project
 
 ```bash
