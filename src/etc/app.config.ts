@@ -16,9 +16,8 @@ export default class AppConfig {
   static readonly JWT_SECRET = process.env.JWT_SECRET || '12345';
   static readonly JWT_REFRESH_SECRET =
     process.env.JWT_REFRESH_SECRET || '123456789';
-  static readonly JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1d';
-  static readonly JWT_REFRESH_EXPIRES_IN =
-    process.env.JWT_REFRESH_EXPIRES_IN || '10d';
+  static readonly JWT_EXPIRES_IN = (process.env.JWT_EXPIRES_IN || '1d') as any;
+  static readonly JWT_REFRESH_EXPIRES_IN = (process.env.JWT_REFRESH_EXPIRES_IN || '10d') as any;
 
   static readonly SALT_ROUND = Number.parseInt(process.env.SALT_ROUND) || 3;
 
