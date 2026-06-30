@@ -1,0 +1,50 @@
+services:
+  api:
+    container_name: food-app-api
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    ports:
+      - ${PORT}:${PORT}
+
+    environment:
+      PORT: ${PORT}
+      
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+      NODE_ENV: development
+
+    depends_on:
+      - postgres
+
+    restart: unless-stopped
+
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+  postgres:
+    container_name: postgres-db
+
+    image: postgres:17-alpine
+
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
