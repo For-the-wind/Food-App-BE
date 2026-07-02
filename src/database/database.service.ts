@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import AppConfig from '../etc/app.config.js';
 import { Log } from '../logger/logger.decorator.js';
 import { LogService } from '../logger/logger.service.js';
-import { User } from '../apis/users/users.entity.js';
+import { User } from '../apis/users/entities/user.entity.js';
 import { RoleEnum } from '../etc/enum.js';
 import { PasswordHelper } from '../utils/password.helper.js';
 

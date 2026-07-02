@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import AppDataSource from './datasource.js';
 import { DatabaseService } from './database.service';
-import { User } from '../apis/users/users.entity.js';
+import { User } from '../apis/users/entities/user.entity.js';
 
 @Module({
   imports: [
@@ -12,7 +12,7 @@ import { User } from '../apis/users/users.entity.js';
   providers: [DatabaseService],
 })
 export class DatabaseModule {
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor(private readonly databaseService: DatabaseService) { }
 
   onModuleInit() {
     this.databaseService.loadAdmin();

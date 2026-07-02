@@ -3,7 +3,7 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { PasswordHelper } from '../../utils/password.helper';
 import { AuthTokenReturn } from './dtos/auth-response.dto';
-import { User } from '../users/users.entity';
+import { User } from '../users/entities/user.entity';
 import AppConfig from '../../etc/app.config';
 
 @Injectable()

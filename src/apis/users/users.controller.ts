@@ -2,7 +2,7 @@
 import { Body, Controller, Get, Post, UseFilters } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { HttpExceptionFilter } from '../../etc/http-exception.filter';
-import { User } from './users.entity';
+import { User } from './entities/user.entity';
 
 @Controller('users')
 export class UsersController {

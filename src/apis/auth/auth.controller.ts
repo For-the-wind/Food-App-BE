@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import CurrentAccount from '../../decorators/current-account.decorator';
-import { User } from '../users/users.entity';
+import { User } from '../users/entities/user.entity';
 import { JwtRefreshAuthGuard } from './jwt-refresh-auth.guard';
 import { SignInDto } from './dtos/auth-request.dto';
 import ResponseObject from '../../etc/response-object';
@@ -22,7 +22,7 @@ export class AuthController {
 
     @Post('refresh')
     @UseGuards(JwtRefreshAuthGuard)
-    async refreshToken(@CurrentAccount()  user: User) {
+    async refreshToken(@CurrentAccount() user: User) {
         const [data, err] = await this.authService.refreshToken(user);
         if (!data) {
             return new ResponseObject(
