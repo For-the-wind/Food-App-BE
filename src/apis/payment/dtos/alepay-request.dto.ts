@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsString } from 'class-validator';
+import { IsEmail, IsInt, IsNotEmpty, IsPositive, IsString, Min } from 'class-validator';
 
 export class CreateCardLinkDto {
   @ApiProperty({
@@ -50,4 +50,40 @@ export class CreateCardLinkDto {
   })
   @IsString()
   postalCode: string;
+}
+
+
+export class OneClickPaymentDto {
+  @ApiProperty({
+    example: 'cus_123456789',
+    description: 'Customer token nhận được sau khi liên kết thẻ',
+  })
+  @IsString()
+  @IsNotEmpty()
+  customerToken: string;
+
+  @ApiProperty({
+    example: 'ORDER_20260707143000',
+    description: 'Mã đơn hàng duy nhất',
+  })
+  @IsString()
+  @IsNotEmpty()
+  orderCode: string;
+
+  @ApiProperty({
+    example: 250000,
+    description: 'Số tiền thanh toán (VND)',
+  })
+  @IsInt()
+  @IsPositive()
+  @Min(1000)
+  amount: number;
+
+  @ApiProperty({
+    example: 'Thanh toán đơn hàng #12345',
+    description: 'Mô tả đơn hàng',
+  })
+  @IsString()
+  @IsNotEmpty()
+  orderDescription: string;
 }

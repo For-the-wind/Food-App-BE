@@ -8,6 +8,7 @@ import AppConfig from '../../etc/app.config';
 import * as crypto from 'node:crypto';
 import { User } from '../users/entities/user.entity';
 import { ConfigService } from '@nestjs/config';
+import { OneClickPaymentDto } from './dtos/alepay-request.dto';
 
 @Injectable()
 export class AlepayService {
@@ -106,7 +107,7 @@ export class AlepayService {
     return result;
   }
 
-  async oneClickPayment(dto: any) {
+  async oneClickPayment(dto: OneClickPaymentDto) {
     const payload: any = {
       tokenKey: AppConfig.ALEPAY_TOKEN_KEY,
       customerToken: dto.customerToken,

@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 
 import { AlepayService } from './alepay.service';
-import { CreateCardLinkDto } from './dtos/alepay-request.dto';
+import { CreateCardLinkDto, OneClickPaymentDto } from './dtos/alepay-request.dto';
 import CurrentAccount from '../../decorators/current-account.decorator';
 import { User } from '../users/entities/user.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -48,13 +48,8 @@ export class AlepayController {
     }
 
     @Post('one-click-payment')
-    oneClick(
-        @CurrentAccount() user: User,
-        @Body() dto,
-    ) {
-        return this.alepayService.oneClickPayment(
-            user,
-        );
+    async oneClickPayment(@Body() dto: OneClickPaymentDto) {
+        return await this.alepayService.oneClickPayment(dto);
     }
 
     @Post('cancel-card')
@@ -81,6 +76,17 @@ export class AlepayController {
 
         return res.redirect(
             `yourapp://payment-methods?status=${status}&transactionCode=${query.transactionCode ?? ''}`,
+        );
+    }
+
+    @Get('cancel')
+    async cancelUrl(
+        @Query() query,
+        @Res() res,
+    ) {
+        return res.redirect(
+            `yourapp://payment-methods?status=cancelled&transactionCode=${query.transactionCode ?? ''
+            }`,
         );
     }
 }
