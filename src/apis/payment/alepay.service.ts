@@ -8,7 +8,7 @@ import AppConfig from '../../etc/app.config';
 import * as crypto from 'node:crypto';
 import { User } from '../users/entities/user.entity';
 import { ConfigService } from '@nestjs/config';
-import { OneClickPaymentDto } from './dtos/alepay-request.dto';
+import { OneClickPaymentDto, PaymentTokenizationDto } from './dtos/alepay-request.dto';
 
 @Injectable()
 export class AlepayService {
@@ -144,5 +144,53 @@ export class AlepayService {
       '/cancel-profile',
       payload,
     );
+  }
+
+  async paymentTokenization(
+    user: User,
+    dto: PaymentTokenizationDto,
+  ) {
+    const payload: any = {
+      tokenKey: AppConfig.ALEPAY_TOKEN_KEY,
+
+      orderCode: dto.orderCode,
+      amount: dto.amount,
+      currency: 'VND',
+      totalItem: dto.totalItem,
+
+      orderDescription: dto.orderDescription,
+
+      buyerName: dto.buyerName,
+      buyerEmail: dto.buyerEmail,
+      buyerPhone: dto.buyerPhone,
+      buyerAddress: dto.buyerAddress,
+      buyerCity: dto.buyerCity,
+      buyerCountry: dto.buyerCountry,
+
+      customerId: user.id.toString(),
+
+      returnUrl: AppConfig.ALEPAY_RETURN_URL,
+      cancelUrl: AppConfig.ALEPAY_CANCEL_URL,
+
+      isCardLink: dto.isCardLink,
+      paymentHours: 1,
+      language: 'vi',
+    };
+
+    payload.signature = this.buildAlepaySignature(
+      payload,
+      AppConfig.ALEPAY_CHECKSUM_KEY,
+    );
+
+    const result = await this.callAlepay(
+      '/request-payment',
+      payload,
+    );
+
+    if (result.code !== '000') {
+      throw new InternalServerErrorException(result.message);
+    }
+
+    return result;
   }
 }

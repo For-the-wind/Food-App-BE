@@ -2,16 +2,14 @@ import {
     Body,
     Controller,
     Get,
-    Param,
     Post,
     Query,
-    Req,
     Res,
     UseGuards,
 } from '@nestjs/common';
 
 import { AlepayService } from './alepay.service';
-import { CancelLinkCardDto, CreateCardLinkDto, OneClickPaymentDto } from './dtos/alepay-request.dto';
+import { CancelLinkCardDto, CreateCardLinkDto, OneClickPaymentDto, PaymentTokenizationDto } from './dtos/alepay-request.dto';
 import CurrentAccount from '../../decorators/current-account.decorator';
 import { User } from '../users/entities/user.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -47,9 +45,24 @@ export class AlepayController {
         return this.alepayService.getLinkedCards(user.id);
     }
 
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
     @Post('one-click-payment')
     async oneClickPayment(@Body() dto: OneClickPaymentDto) {
         return await this.alepayService.oneClickPayment(dto);
+    }
+
+    @Post('payment-tokenization')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
+    paymentTokenization(
+        @CurrentAccount() user: User,
+        @Body() dto: PaymentTokenizationDto,
+    ) {
+        return this.alepayService.paymentTokenization(
+            user,
+            dto,
+        );
     }
 
     @UseGuards(JwtAuthGuard)
