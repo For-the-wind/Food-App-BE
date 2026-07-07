@@ -63,20 +63,13 @@ export class AlepayController {
     }
 
     @Get('return')
-    async returnUrl(
-        @Query() query,
-        @Res() res,
-    ) {
-        const status =
-            query.cancel === 'true'
-                ? 'cancelled'
-                : query.code === '000'
-                    ? 'success'
-                    : 'failed';
+    returnUrl(@Query() query) {
+        console.log('ALEPAY RETURN:', query);
 
-        return res.redirect(
-            `yourapp://payment-methods?status=${status}&transactionCode=${query.transactionCode ?? ''}`,
-        );
+        return {
+            message: 'Alepay callback received',
+            query,
+        };
     }
 
     @Get('cancel')

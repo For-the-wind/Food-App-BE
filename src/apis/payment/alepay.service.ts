@@ -44,10 +44,6 @@ export class AlepayService {
   }
 
   async createCardLink(user: User, dto: any) {
-    const orderCode = `LINK_${user.id}_${Date.now()}`;
-
-    console.log("Return url: ", AppConfig.ALEPAY_RETURN_URL)
-
     const names = dto.fullName.trim().split(/\s+/);
 
     const payload: any = {

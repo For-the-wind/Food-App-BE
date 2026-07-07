@@ -29,5 +29,5 @@ export default class AppConfig {
   static readonly ALEPAY_CHECKSUM_KEY = process.env.ALEPAY_CHECKSUM_KEY || '';
   static readonly ALEPAY_BASE_URL = process.env.ALEPAY_BASE_URL || '';
   static readonly ALEPAY_RETURN_URL = process.env.ALEPAY_RETURN_URL || '';
-  static readonly ALEPAY_CANCEL_URL = process.env.ALEPAY_TOKEN_KEY || '';
+  static readonly ALEPAY_CANCEL_URL = process.env.ALEPAY_CANCEL_URL || '';
 }
