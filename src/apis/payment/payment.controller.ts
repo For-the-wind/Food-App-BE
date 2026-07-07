@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 
 import { AlepayService } from './alepay.service';
-import { CreateCardLinkDto, OneClickPaymentDto } from './dtos/alepay-request.dto';
+import { CancelLinkCardDto, CreateCardLinkDto, OneClickPaymentDto } from './dtos/alepay-request.dto';
 import CurrentAccount from '../../decorators/current-account.decorator';
 import { User } from '../users/entities/user.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -52,13 +52,12 @@ export class AlepayController {
         return await this.alepayService.oneClickPayment(dto);
     }
 
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
     @Post('cancel-card')
-    cancel(
-        @CurrentAccount() user: User,
-        @Body('alepayToken') token: string,
-    ) {
+    cancelLinkCard(@Body() dto: CancelLinkCardDto) {
         return this.alepayService.cancelCardLink(
-            user.id,
+            dto.alepayToken,
         );
     }
 

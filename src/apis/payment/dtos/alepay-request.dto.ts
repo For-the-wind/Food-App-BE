@@ -87,3 +87,13 @@ export class OneClickPaymentDto {
   @IsNotEmpty()
   orderDescription: string;
 }
+
+export class CancelLinkCardDto {
+  @ApiProperty({
+    example: 'cus_123456789',
+    description: 'Customer token nhận được sau khi liên kết thẻ',
+  })
+  @IsString()
+  @IsNotEmpty()
+  alepayToken: string;
+}
