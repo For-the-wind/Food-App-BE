@@ -47,29 +47,23 @@ export class AlepayService {
 
     console.log("Return url: ", AppConfig.ALEPAY_RETURN_URL)
 
+    const names = dto.fullName.trim().split(/\s+/);
+
     const payload: any = {
       tokenKey: AppConfig.ALEPAY_TOKEN_KEY,
-      orderCode,
-      amount: 1000,
-      currency: 'VND',
-      orderDescription: 'Xac thuc lien ket the',
-      totalItem: 1,
-      checkoutType: 1,
-      returnUrl: AppConfig.ALEPAY_RETURN_URL,
-      cancelUrl: AppConfig.ALEPAY_CANCEL_URL,
+      id: user.id.toString(),
+      firstName: names.slice(0, -1).join(' ') || names[0],
+      lastName: names.length > 1 ? names[names.length - 1] : '',
+      street: dto.address,
+      city: dto.city,
+      state: dto.state,
+      postalCode: dto.postalCode,
+      country: "VN",
+      email: dto.email,
+      phoneNumber: dto.phone,
+      callback: AppConfig.ALEPAY_RETURN_URL,
 
-      buyerName: dto.fullName,
-      buyerEmail: dto.email,
-      buyerPhone: dto.phone,
-      buyerAddress: dto.address,
-      buyerCity: dto.city,
-      buyerCountry: 'Viet Nam',
-
-      paymentHours: 1,
-
-      merchantSideUserId: user.id,
-
-      isCardLink: true,
+      language: "vi",
     };
 
     payload.signature = this.buildAlepaySignature(
@@ -78,7 +72,7 @@ export class AlepayService {
     );
 
     const result = await this.callAlepay(
-      '/request-payment',
+      '/request-profile',
       payload,
     );
 

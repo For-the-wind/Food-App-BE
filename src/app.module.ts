@@ -6,7 +6,6 @@ import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './apis/auth/auth.module';
 import { PaymentModule } from './apis/payment/payment.module';
 import { ConfigModule } from '@nestjs/config';
-import AppConfig from './etc/app.config';
 
 @Module({
   imports: [
