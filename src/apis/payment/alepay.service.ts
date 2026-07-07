@@ -34,7 +34,7 @@ export class AlepayService {
       .digest('hex');
   }
 
-  async callAlepay(path: string, body: any) {
+  private async callAlepay(path: string, body: any) {
     const response = await firstValueFrom(
       this.http.post(`${AppConfig.ALEPAY_BASE_URL}${path}`, body),
     );
@@ -103,14 +103,7 @@ export class AlepayService {
       return [];
     }
 
-    return (result.listCardTokens || []).map((card) => ({
-      id: card.token,
-      brand: card.paymentMethod,
-      last4: card.cardNumber.split('-').pop(),
-      expiry: `${card.cardExpireMonth.padStart(2, '0')}/${card.cardExpireYear.slice(-2)}`,
-      name: card.cardHolderName,
-      bankCode: card.bankCode,
-    }));
+    return result;
   }
 
   async oneClickPayment(dto: any) {

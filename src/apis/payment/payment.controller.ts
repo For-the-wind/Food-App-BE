@@ -2,6 +2,7 @@ import {
     Body,
     Controller,
     Get,
+    Param,
     Post,
     Query,
     Req,
@@ -14,7 +15,8 @@ import { CreateCardLinkDto } from './dtos/alepay-request.dto';
 import CurrentAccount from '../../decorators/current-account.decorator';
 import { User } from '../users/entities/user.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger';
+import { CustomerCardInfoResponseDto } from './dtos/alepay-response.dto';
 
 @Controller('alepay')
 export class AlepayController {
@@ -35,13 +37,14 @@ export class AlepayController {
         );
     }
 
-    @Get('cards')
-    getCards(
-        @CurrentAccount() user: User,
-    ) {
-        return this.alepayService.getLinkedCards(
-            user.id,
-        );
+    @ApiOkResponse({
+        type: CustomerCardInfoResponseDto,
+    })
+    @Get('link-cards')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
+    async getLinkCards(@CurrentAccount() user: User): Promise<CustomerCardInfoResponseDto> {
+        return this.alepayService.getLinkedCards(user.id);
     }
 
     @Post('one-click-payment')
