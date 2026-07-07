@@ -12,10 +12,11 @@ const AppDataSource = new DataSource({
     entities: [path.resolve(__dirname + '/../**/*.entity{.js,.ts}')],
     migrations: [path.resolve(__dirname + '/../migrations', '*{.js,.ts}')],
     synchronize: true,
+    ssl: { rejectUnauthorized: false },
     logger: 'advanced-console',
     logging: 'all',
 });
 
-console.log(AppDataSource.options);
+console.log("Database Options: ", AppDataSource.options);
 
 export default AppDataSource;
