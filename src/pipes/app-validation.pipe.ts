@@ -11,10 +11,17 @@ import ResponseObject from '../etc/response-object';
 
 @Injectable()
 export class AppValidationPipe implements PipeTransform<any> {
-  async transform(value: any, { metatype }: ArgumentMetadata) {
+  async transform(value: any, metadata: ArgumentMetadata) {
+    if (metadata.type !== 'body') {
+      return value;
+    }
+
+    const { metatype } = metadata;
+
     if (!metatype || !this.toValidate(metatype)) {
       return value;
     }
+
     const object = plainToInstance(metatype, value);
     const errors = await validate(object);
     if (errors.length > 0) {

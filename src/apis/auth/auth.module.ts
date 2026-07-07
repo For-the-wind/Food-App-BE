@@ -5,6 +5,8 @@ import { AuthController } from './auth.controller';
 import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import AppConfig from '../../etc/app.config';
+import { JwtStrategy } from './jwt.strategy';
+import { JwtRefreshStrategy } from './jwt-refresh.strategy';
 
 @Module({
     imports: [
@@ -15,7 +17,7 @@ import AppConfig from '../../etc/app.config';
             signOptions: { expiresIn: AppConfig.JWT_EXPIRES_IN },
         })
     ],
-    providers: [AuthService],
+    providers: [AuthService, JwtStrategy, JwtRefreshStrategy],
     controllers: [AuthController],
 })
 export class AuthModule { }

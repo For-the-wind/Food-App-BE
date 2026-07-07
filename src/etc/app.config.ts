@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 export default class AppConfig {
   static readonly PORT = Number.parseInt(process.env.PORT || '3000');
 
@@ -21,5 +24,10 @@ export default class AppConfig {
 
   static readonly SALT_ROUND = Number.parseInt(process.env.SALT_ROUND) || 3;
 
-
+  // PAYMENT
+  static readonly ALEPAY_TOKEN_KEY = process.env.ALEPAY_TOKEN_KEY || '';
+  static readonly ALEPAY_CHECKSUM_KEY = process.env.ALEPAY_CHECKSUM_KEY || '';
+  static readonly ALEPAY_BASE_URL = process.env.ALEPAY_BASE_URL || '';
+  static readonly ALEPAY_RETURN_URL = process.env.ALEPAY_RETURN_URL || '';
+  static readonly ALEPAY_CANCEL_URL = process.env.ALEPAY_TOKEN_KEY || '';
 }

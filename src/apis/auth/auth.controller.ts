@@ -42,7 +42,7 @@ export class AuthController {
 
     @Post('authenticate')
     async authentication(@Body() signInDto: SignInDto) {
-        const [data, err] = await this.authService.signIn(signInDto.username, signInDto.password);
+        const [data, err] = await this.authService.signIn(signInDto.email, signInDto.password);
         if (!data) {
             return new ResponseObject(
                 HttpStatus.UNAUTHORIZED,
