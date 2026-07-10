@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
-import { AlepayController } from './payment.controller';
+import { AlepayController } from './alepay.controller';
 import { AlepayService } from './alepay.service';
 
 @Module({
