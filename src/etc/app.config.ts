@@ -30,4 +30,8 @@ export default class AppConfig {
   static readonly ALEPAY_BASE_URL = process.env.ALEPAY_BASE_URL || '';
   static readonly ALEPAY_RETURN_URL = process.env.ALEPAY_RETURN_URL || '';
   static readonly ALEPAY_CANCEL_URL = process.env.ALEPAY_CANCEL_URL || '';
+
+  static readonly BANKHUB_CLIENT_ID = process.env.BANKHUB_CLIENT_ID || '';
+  static readonly BANKHUB_CLIENT_SECRET = process.env.BANKHUB_CLIENT_SECRET || '';
+  static readonly BANKHUB_BASE_URL  = process.env.BANKHUB_BASE_URL || 'https://bankhub-api-sandbox.sepay.vn';
 }
