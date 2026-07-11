@@ -10,9 +10,9 @@ import {
 
 import { AlepayService } from './alepay.service';
 import { CancelLinkCardDto, CreateCardLinkDto, OneClickPaymentDto, PaymentTokenizationDto } from './dtos/alepay-request.dto';
-import CurrentAccount from '../../decorators/current-account.decorator';
-import { User } from '../users/entities/user.entity';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import CurrentAccount from '../../../decorators/current-account.decorator';
+import { User } from '../../users/entities/user.entity';
+import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 import { ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger';
 import { CustomerCardInfoResponseDto } from './dtos/alepay-response.dto';
 

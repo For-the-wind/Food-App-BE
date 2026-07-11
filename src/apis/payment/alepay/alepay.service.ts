@@ -4,9 +4,9 @@ import {
 } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import AppConfig from '../../etc/app.config';
+import AppConfig from '../../../etc/app.config';
 import * as crypto from 'node:crypto';
-import { User } from '../users/entities/user.entity';
+import { User } from '../../users/entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { OneClickPaymentDto, PaymentTokenizationDto } from './dtos/alepay-request.dto';
 
