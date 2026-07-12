@@ -56,7 +56,7 @@ export class CreatePaymentLinkDto {
   orderCode: number;
 
   @ApiProperty({
-    example: 100000,
+    example: 5000,
     description: 'Số tiền cần thu, đơn vị VNĐ, không có phần thập phân',
     minimum: 1000,
   })
@@ -75,7 +75,7 @@ export class CreatePaymentLinkDto {
   description: string;
 
   @ApiProperty({
-    example: 'https://yourapp.com/payment/cancel',
+    example: 'https://food-app-be-kfvh.onrender.com/api/v1/payos/cancel',
     description: 'URL PayOS sẽ redirect về khi khách hàng hủy thanh toán',
   })
   @IsUrl()
@@ -83,7 +83,7 @@ export class CreatePaymentLinkDto {
   cancelUrl: string;
 
   @ApiProperty({
-    example: 'https://yourapp.com/payment/success',
+    example: 'https://food-app-be-kfvh.onrender.com/api/v1/payos/success',
     description: 'URL PayOS sẽ redirect về khi khách hàng thanh toán thành công',
   })
   @IsUrl()

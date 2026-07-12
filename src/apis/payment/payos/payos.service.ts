@@ -19,6 +19,7 @@ import {
   PayoutBalanceResponseDto,
   PayoutResponseDto,
 } from './dtos/payos-response.dto';
+import AppConfig from '../../../etc/app.config';
 
 @Injectable()
 export class PayosService {
@@ -31,11 +32,10 @@ export class PayosService {
 
   constructor(
     private readonly httpService: HttpService,
-    private readonly configService: ConfigService,
   ) {
-    this.clientId = this.configService.get<string>('PAYOS_CLIENT_ID');
-    this.apiKey = this.configService.get<string>('PAYOS_API_KEY');
-    this.checksumKey = this.configService.get<string>('PAYOS_CHECKSUM_KEY');
+    this.clientId = AppConfig.PAYOS_CLIENT_ID;
+    this.apiKey = AppConfig.PAYOS_API_KEY;
+    this.checksumKey = AppConfig.PAYOS_CHECKSUM_KEY;
   }
 
   private get authHeaders() {

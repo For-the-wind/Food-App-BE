@@ -33,5 +33,10 @@ export default class AppConfig {
 
   static readonly BANKHUB_CLIENT_ID = process.env.BANKHUB_CLIENT_ID || '';
   static readonly BANKHUB_CLIENT_SECRET = process.env.BANKHUB_CLIENT_SECRET || '';
-  static readonly BANKHUB_BASE_URL  = process.env.BANKHUB_BASE_URL || 'https://bankhub-api-sandbox.sepay.vn';
+  static readonly BANKHUB_BASE_URL = process.env.BANKHUB_BASE_URL || 'https://bankhub-api-sandbox.sepay.vn';
+
+  static readonly PAYOS_CLIENT_ID = process.env.PAYOS_CLIENT_ID || '';
+  static readonly PAYOS_API_KEY = process.env.PAYOS_API_KEY || '';
+  static readonly PAYOS_CHECKSUM_KEY = process.env.PAYOS_CHECKSUM_KEY || '';
+
 }
