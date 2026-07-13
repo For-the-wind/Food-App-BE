@@ -39,4 +39,7 @@ export default class AppConfig {
   static readonly PAYOS_API_KEY = process.env.PAYOS_API_KEY || '';
   static readonly PAYOS_CHECKSUM_KEY = process.env.PAYOS_CHECKSUM_KEY || '';
 
+  static readonly PAYOS_PAYOUT_CLIENT_ID = process.env.PAYOS_PAYOUT_CLIENT_ID || '';
+  static readonly PAYOS_PAYOUT_API_KEY = process.env.PAYOS_PAYOUT_API_KEY || '';
+  static readonly PAYOS_PAYOUT_CHECKSUM_KEY = process.env.PAYOS_PAYOUT_CHECKSUM_KEY || '';
 }

@@ -29,6 +29,9 @@ export class PayosService {
   private readonly clientId: string;
   private readonly apiKey: string;
   private readonly checksumKey: string;
+  private readonly payoutClientId: string;
+  private readonly payoutApiKey: string;
+  private readonly payoutChecksumKey: string;
 
   constructor(
     private readonly httpService: HttpService,
@@ -36,12 +39,23 @@ export class PayosService {
     this.clientId = AppConfig.PAYOS_CLIENT_ID;
     this.apiKey = AppConfig.PAYOS_API_KEY;
     this.checksumKey = AppConfig.PAYOS_CHECKSUM_KEY;
+    this.payoutClientId = AppConfig.PAYOS_PAYOUT_CLIENT_ID;
+    this.payoutApiKey = AppConfig.PAYOS_PAYOUT_API_KEY;
+    this.payoutChecksumKey = AppConfig.PAYOS_PAYOUT_CHECKSUM_KEY;
   }
 
   private get authHeaders() {
     return {
       'x-client-id': this.clientId,
       'x-api-key': this.apiKey,
+      'Content-Type': 'application/json',
+    };
+  }
+
+  private get payoutAuthHeaders() {
+    return {
+      'x-client-id': this.payoutClientId,
+      'x-api-key': this.payoutApiKey,
       'Content-Type': 'application/json',
     };
   }
@@ -135,26 +149,61 @@ export class PayosService {
   /**
    * Chữ ký cho lệnh chi: HMAC-SHA256 của body JSON (đã stringify, key sort theo alphabet)
    */
-  private signPayout(dto: CreatePayoutDto): string {
-    const sortedBody = Object.keys(dto)
-      .sort()
-      .reduce((acc, key) => {
-        acc[key] = dto[key];
-        return acc;
-      }, {} as Record<string, unknown>);
 
-    const raw = JSON.stringify(sortedBody);
-    return crypto.createHmac('sha256', this.checksumKey).update(raw).digest('hex');
+  deepSort(obj: any): any {
+    if (Array.isArray(obj)) {
+      // Keep array order, only sort objects inside
+      return obj.map(item =>
+        item && typeof item === 'object'
+          ? this.deepSort(item)
+          : item,
+      );
+    }
+
+    if (obj && typeof obj === 'object') {
+      return Object.keys(obj)
+        .sort()
+        .reduce((acc: any, key) => {
+          acc[key] = this.deepSort(obj[key]);
+          return acc;
+        }, {});
+    }
+
+    return obj;
+  }
+
+  createSignature(data: object): string {
+    const sorted = this.deepSort(data);
+
+    const queryString = Object.keys(sorted)
+      .map((key) => {
+        let value: any = (sorted as any)[key];
+
+        if (Array.isArray(value) || (value && typeof value === 'object')) {
+          value = JSON.stringify(value);
+        }
+
+        value ??= '';
+
+        return `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`;
+      })
+      .join('&');
+
+    return crypto
+      .createHmac('sha256', this.payoutChecksumKey)
+      .update(queryString)
+      .digest('hex');
   }
 
   async createPayout(dto: CreatePayoutDto, idempotencyKey?: string): Promise<PayoutResponseDto> {
-    const signature = this.signPayout(dto);
+    const signature = this.createSignature(dto);
+    console.log("Auth headers: ", this.payoutAuthHeaders)
 
     try {
       const { data } = await firstValueFrom(
         this.httpService.post(`${this.baseUrl}/v1/payouts`, dto, {
           headers: {
-            ...this.authHeaders,
+            ...this.payoutAuthHeaders,
             'x-signature': signature,
             'x-idempotency-key': idempotencyKey ?? uuidv4(),
           },
@@ -175,7 +224,7 @@ export class PayosService {
     try {
       const { data } = await firstValueFrom(
         this.httpService.get(`${this.baseUrl}/v1/payouts/${payoutId}`, {
-          headers: this.authHeaders,
+          headers: this.payoutAuthHeaders,
         }),
       );
       return data.data as PayoutResponseDto;
@@ -188,7 +237,7 @@ export class PayosService {
     try {
       const { data } = await firstValueFrom(
         this.httpService.get(`${this.baseUrl}/v1/payouts`, {
-          headers: this.authHeaders,
+          headers: this.payoutAuthHeaders,
           params: query,
         }),
       );
@@ -202,7 +251,7 @@ export class PayosService {
     try {
       const { data } = await firstValueFrom(
         this.httpService.get(`${this.baseUrl}/v1/payouts-account/balance`, {
-          headers: this.authHeaders,
+          headers: this.payoutAuthHeaders,
         }),
       );
       return data.data as PayoutBalanceResponseDto;
