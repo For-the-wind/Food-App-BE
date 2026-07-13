@@ -65,14 +65,6 @@ export class CreatePayoutDto {
   toAccountNumber: string;
 
   @ApiPropertyOptional({
-    example: 'Nguyen Van B',
-    description: 'Tên chủ tài khoản người nhận (dùng để xác thực, nếu PayOS hỗ trợ đối chiếu tên)',
-  })
-  @IsOptional()
-  @IsString()
-  toAccountName?: string;
-
-  @ApiPropertyOptional({
     type: [String],
     example: ['salary', 'commission'],
     description: 'Danh mục phân loại lệnh chi, phục vụ mục đích thống kê/báo cáo nội bộ',
